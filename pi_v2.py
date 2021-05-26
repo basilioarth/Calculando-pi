@@ -18,4 +18,13 @@ def calcPi(M, total, rank):
     pi = 4/M * sum
     return pi
 
-print("O processo", rank, "na maquina", maq, "retorna que o valor parcial de pi =", calcPi(840, comm.Get_size(), rank))
+comm.Barrier()
+tinicial=MPI.Wtime()
+for i in range (0, 200):
+    result = calcPi(840, comm.Get_size(), rank)
+comm.Barrier()
+tfinal=MPI.Wtime()
+
+ttotal = tfinal - tinicial
+
+print("O processo {} na maquina {} retornou que o valor parcial de pi = {} em {} segundos".format(rank, maq, result, ttotal))

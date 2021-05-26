@@ -15,4 +15,13 @@ def calcPi(N):
     pi = 4/N * sum
     return pi
 
-print("O processo", rank, "na maquina", maq, "retorna que o valor de pi =", calcPi(840))
+comm.Barrier()
+tinicial=MPI.Wtime()
+for i in range (0, 200):
+    result = calcPi(840)
+comm.Barrier()
+tfinal=MPI.Wtime()
+
+ttotal = tfinal - tinicial
+
+print("O processo {} na maquina {} retornou que o valor de pi = {} em {} segundos".format(rank, maq, result, ttotal))
