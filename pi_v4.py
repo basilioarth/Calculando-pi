@@ -18,11 +18,24 @@ def calcPi(M, total, rank):
     pi = 4/M * sum
     return pi
 
-total_pi = np.zeros(1)
-data = np.zeros(1)
-data[0] = calcPi(840, comm.Get_size(), rank)
+comm.Barrier()
+tinicial=MPI.Wtime()
+
+for i in range (0, 200):
+    total_pi = np.zeros(1)
+    data = np.zeros(1)
+    data[0] = calcPi(840, comm.Get_size(), rank)
+
+comm.Barrier()
+tcalc=MPI.Wtime()
 
 comm.Reduce(data, total_pi, op=MPI.SUM, root=0)
+tfinal=MPI.Wtime()
+
+ttotalcal = tcalc - tinicial
+ttotal = tfinal - tinicial
 
 if rank == 0:
-    print("Pelo somatorio do metodo Reduce, o valor de pi =", total_pi[0])
+    #print("Pelo somatorio do metodo Reduce, o valor de pi =", total_pi[0])
+    print("Pelo somatorio do metodo Reduce, o valor de pi = {}\nLevou {} para a realizaçao do calculo e {} contando com o processo de comunicacao"
+    .format(total_pi[0], ttotalcal, ttotal))
