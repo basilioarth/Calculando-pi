@@ -10,9 +10,9 @@ total_pi = 0
 def calcPi(M, total, rank):
     sum = 0
     pi = 0
-    N = M//(total-1)
-    begin = (N*rank) - (N - 1)
-    end = (N*rank)
+    N = M//total
+    begin = (N*(rank + 1)) - (N - 1)
+    end = (N*(rank + 1))
     
     for i in range(begin, end+1):
         sum = sum + 1/(1 + np.power((i - 1/2)/M, 2))
@@ -20,8 +20,13 @@ def calcPi(M, total, rank):
     pi = 4/M * sum
     return pi
 
+for i in range (0, 200):
+        data = calcPi(840, comm.Get_size(), rank)
+
+comm.send([data, maq], dest=0)
+
 if rank == 0:
-    for i in range(1, comm.Get_size()):
+    for i in range(0, comm.Get_size()):
         data = comm.recv(source=i)
 
         partial_pi = data[0]
@@ -29,9 +34,6 @@ if rank == 0:
 
         total_pi = total_pi + partial_pi
         print("A {} enviou o valor parcial de pi {} calculado pelo processo {} e o valor atual de pi = {}".format(maqSender, partial_pi, i, total_pi))
-else:
-    data = calcPi(840, comm.Get_size(), rank)
-    comm.send([data, maq], dest=0)
 
 if rank == 0:
     print("O processo", rank, "na maquina", maq, "retorna que o valor final de pi =", total_pi)
