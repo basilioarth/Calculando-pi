@@ -32,10 +32,10 @@ tcalc=MPI.Wtime()
 comm.Reduce(data, total_pi, op=MPI.SUM, root=0)
 tfinal=MPI.Wtime()
 
-ttotalcal = tcalc - tinicial
+ttotalcalc = tcalc - tinicial
 ttotal = tfinal - tinicial
 
 if rank == 0:
     #print("Pelo somatorio do metodo Reduce, o valor de pi =", total_pi[0])
     print("Pelo somatorio do metodo Reduce, o valor de pi = {}\nLevou {} para a realizaçao do calculo e {} contando com o processo de comunicacao"
-    .format(total_pi[0], ttotalcal, ttotal))
+    .format(total_pi[0], ttotalcalc, ttotal))
