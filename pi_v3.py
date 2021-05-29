@@ -33,7 +33,7 @@ if rank == 0:
         maqSender = data[1]
 
         total_pi = total_pi + partial_pi
-        print("A {} enviou o valor parcial de pi {} calculado pelo processo {} e o valor atual de pi = {}".format(maqSender, partial_pi, i, total_pi))
+        print("A {} enviou o valor parcial de pi {} calculado pelo processo {}".format(maqSender, partial_pi, i))
 
 if rank == 0:
     print("O processo", rank, "na maquina", maq, "retorna que o valor final de pi =", total_pi)
