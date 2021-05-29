@@ -8,6 +8,10 @@ maq=MPI.Get_processor_name()
 total_pi = 0
 tcalc = 0
 
+if(840 % comm.Get_size() != 0):
+    print("840 não é divisível pela quantidade especificada de processos!")
+    comm.Abort()
+
 def calcPi(M, total, rank):
     sum = 0
     pi = 0
@@ -40,7 +44,6 @@ if rank == 0:
         maqSender = data[1]
 
         total_pi = total_pi + partial_pi
-        print("A {} enviou o valor parcial de pi {} calculado pelo processo {} e o valor atual de pi = {}".format(maqSender, partial_pi, i, total_pi))
 tfinal=MPI.Wtime()
 
 ttotalcalc = tcalc - tinicial

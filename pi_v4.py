@@ -5,6 +5,10 @@ comm=MPI.COMM_WORLD
 rank=comm.Get_rank()
 maq=MPI.Get_processor_name()
 
+if(840 % comm.Get_size() != 0):
+    print("840 não é divisível pela quantidade especificada de processos!")
+    comm.Abort()
+
 def calcPi(M, total, rank):
     sum = 0
     pi = 0
@@ -36,6 +40,5 @@ ttotalcalc = tcalc - tinicial
 ttotal = tfinal - tinicial
 
 if rank == 0:
-    #print("Pelo somatorio do metodo Reduce, o valor de pi =", total_pi[0])
     print("Pelo somatorio do metodo Reduce, o valor de pi = {}\nLevou {} para a realizaçao do calculo e {} contando com o processo de comunicacao"
     .format(total_pi[0], ttotalcalc, ttotal))
